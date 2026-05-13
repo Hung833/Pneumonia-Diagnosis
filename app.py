@@ -5,7 +5,7 @@ import tensorflow as tf
 
 # 1. TIÊU ĐỀ VÀ CẤU HÌNH GIAO DIỆN CHUYÊN NGHIỆP
 # Sử dụng layout wide để có không gian hiển thị ảnh X-quang to và rõ hơn
-st.set_page_config(page_title="AI Diagnostic Assistant - X-Ray", page_icon="🩻", layout="wide")
+st.set_page_config(page_title="AI Diagnostic Assistant - X-Ray", page_icon="🫁", layout="wide")
 
 # 2. HÀM LOAD MODEL TFLITE
 @st.cache_resource
@@ -34,10 +34,10 @@ with st.spinner('Đang tải hệ thống trợ lý AI...'):
     interpreter = load_tflite_model()
 
 # 3. HEADER & THÔNG TIN BỆNH NHÂN (ẨN DANH)
-st.title("🩻 Hệ Thống Trợ Lý AI Hỗ Trợ Chẩn Đoán X-Quang Phổi")
+st.title("🫁 Hệ Thống Trợ Lý AI Hỗ Trợ Chẩn Đoán X-Quang Phổi")
 st.markdown("*Phiên bản Dành cho Chuyên gia Y tế*")
 
-with st.expander("📝 Thông tin ca lâm sàng (Không bắt buộc)"):
+with st.expander("Thông tin ca lâm sàng (Không bắt buộc)"):
     patient_id = st.text_input("Mã bệnh nhân (Đã ẩn danh):", placeholder="VD: BN-2026-001")
     symptoms = st.text_area("Ghi chú lâm sàng ban đầu của bác sĩ:")
 
@@ -47,7 +47,7 @@ st.write("---")
 col1, col2 = st.columns([1.2, 1])
 
 with col1:
-    st.subheader("🖼️ Phim X-Quang")
+    st.subheader("Phim X-Quang")
     uploaded_file = st.file_uploader("Tải lên ảnh X-quang chuẩn (DICOM, JPG, PNG)...", type=["jpg", "png", "jpeg"])
 
     if uploaded_file is not None:
@@ -55,7 +55,7 @@ with col1:
         st.image(image, caption='Phim X-Quang bệnh nhân', use_container_width=True)
 
 with col2:
-    st.subheader("🤖 Trợ lý AI Phân Tích")
+    st.subheader("Trợ lý AI Phân Tích")
     
     if uploaded_file is None:
         st.info("Vui lòng tải phim X-quang ở cột bên trái để bắt đầu phân tích.")
@@ -118,7 +118,7 @@ with col2:
                 
                 # --- KHUNG QUYẾT ĐỊNH CỦA BÁC SĨ (ETHICAL AI) ---
                 st.write("---")
-                st.subheader("👨‍⚕️ Kết luận cuối cùng của Bác sĩ")
+                st.subheader("Kết luận cuối cùng của Bác sĩ")
                 st.caption("AI chỉ đóng vai trò khoanh vùng hỗ trợ. Bác sĩ vui lòng đối chiếu và đưa ra kết luận.")
                 
                 doctor_decision = st.radio(
