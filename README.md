@@ -44,3 +44,16 @@ Based on the test set evaluation, the model achieved highly reliable clinical me
    ```bash
    git clone [https://github.com/Hung833/Pneumonia-Diagnosis.git](https://github.com/Hung833/Pneumonia-Diagnosis.git)
    cd Pneumonia-Diagnosis
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+3. **Run the Streamlit Web App:**
+   ```bash
+   streamlit run app.py
+## Development Roadmap
+- Build Baseline Model using DenseNet121.
+- Deploy end-to-end web application via Streamlit.
+- Optimize model via Fine-tuning the top convolutional blocks.
+- Integrate Grad-CAM for model explainability.
+- Convert weights to TFLite to further reduce inference latency.
+- Containerize the application using Docker.
