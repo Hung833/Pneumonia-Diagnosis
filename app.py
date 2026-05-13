@@ -5,7 +5,7 @@ import tensorflow as tf
 import pandas as pd
 
 # 1. CẤU HÌNH GIAO DIỆN
-st.set_page_config(page_title="AI Diagnostic Assistant - Batch Mode", page_icon="🩻", layout="wide")
+st.set_page_config(page_title="AI Diagnostic Assistant - Batch Mode", page_icon="🫁", layout="wide")
 
 @st.cache_resource
 def load_tflite_model():
@@ -23,7 +23,7 @@ def predict_tflite(interpreter, img_array):
 interpreter = load_tflite_model()
 
 # 2. GIAO DIỆN CHÍNH
-st.title("🩻 Hệ Thống Trợ Lý AI Phân Loại X-Quang Phổi Hàng Loạt")
+st.title("🫁Hệ Thống Trợ Lý AI Phân Loại X-Quang")
 st.markdown("Hỗ trợ bác sĩ xử lý nhanh danh sách bệnh nhân dựa trên mức độ ưu tiên.")
 
 # 3. SIDEBAR: TẢI FILE
