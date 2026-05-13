@@ -82,7 +82,7 @@ def apply_heatmap_overlay(img_pil, heatmap, alpha=0.4):
 # ==========================================
 # 4. CLINICAL WORKSPACE UI
 # ==========================================
-st.title("🫁 Pulmonary X-Ray Triage & Analytics Suite")
+st.title("🫁 AI Pulmonary Diagnostic Suite")
 st.markdown("*Advanced Clinical Decision Support System*")
 
 # State Management Initialization
