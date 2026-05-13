@@ -1,6 +1,6 @@
 # AI Pulmonary Diagnostic Suite
 
-[![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://pneumonia-diagnosis-24ob8csljfy2efc6zclrbp.streamlit.app/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://ai-pulmonary-diagnostic-suite-sxvewn5lvevhh7ehe22v5p.streamlit.app/)
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-orange?logo=tensorflow&logoColor=white)](https://tensorflow.org/)
 [![Kaggle](https://img.shields.io/badge/Kaggle-Training_Notebook-20BEFF?logo=kaggle&logoColor=white)](https://www.kaggle.com/code/hoadao833hung/pneumonia-diagnosis-web)
@@ -8,7 +8,7 @@
 ## Overview
 The AI Pulmonary Diagnostic Suite is a web-based diagnostic support system designed to assist in detecting pneumonia from chest X-rays. Built with a dual-engine architecture, the system balances high-speed batch processing with interpretable predictions, aiming to provide a reliable and explainable tool for medical image analysis.
 
-**Live Demo:** [Web Interface Access](https://pneumonia-diagnosis-24ob8csljfy2efc6zclrbp.streamlit.app/)
+**Live Demo:** [Web Interface Access](https://ai-pulmonary-diagnostic-suite-sxvewn5lvevhh7ehe22v5p.streamlit.app/)
 
 ## Key Features & Capabilities
 - **Dual-Engine Architecture:**
