@@ -204,10 +204,43 @@ if st.session_state.analysis_results:
     with tab2: display_grid(rv_cases)
     with tab3: display_grid(cl_cases)
 
-    # NÚT XUẤT BÁO CÁO (Demo logic hiển thị)
+    # ==========================================
+    # 5. XUẤT BÁO CÁO (THỰC THI THẬT)
+    # ==========================================
     st.write("---")
+    st.subheader("📥 Xuất Báo Cáo")
     colA, colB = st.columns(2)
-    with colA:
-        st.download_button("📥 Xuất báo cáo Lâm sàng (PDF)", data="Dữ liệu giả lập PDF...", file_name="BenhAn.pdf")
+    
+    # Chuẩn bị dữ liệu thống kê
+    df_export = df[['filename', 'status', 'confidence']].copy()
+    df_export.columns = ['Tên file', 'Chẩn đoán AI', 'Độ tin cậy (%)']
+    
+    # 1. Tạo file Excel lưu vào bộ nhớ đệm
+    import io
+    excel_buffer = io.BytesIO()
+    with pd.ExcelWriter(excel_buffer, engine='xlsxwriter') as writer:
+        df_export.to_excel(writer, index=False, sheet_name='ThongKe')
+    
     with colB:
-        st.download_button("📊 Xuất báo cáo Quản lý (Excel)", data="Dữ liệu giả lập CSV...", file_name="ThongKe.csv")
+        st.download_button(
+            label="📊 Tải file Excel (Thống kê quản lý)", 
+            data=excel_buffer.getvalue(), 
+            file_name="BaoCao_ThongKe.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+        
+    # 2. Tạo text Báo cáo lâm sàng
+    with colA:
+        clinical_text = "BÁO CÁO LÂM SÀNG - HỆ THỐNG AI\n" + "="*40 + "\n"
+        for _, row in df_export.iterrows():
+            clinical_text += f"- File X-Quang: {row['Tên file']}\n"
+            clinical_text += f"  + AI Đánh giá: {row['Chẩn đoán AI']}\n"
+            clinical_text += f"  + Độ tin cậy: {row['Độ tin cậy (%)']:.2f}%\n"
+            clinical_text += "-"*40 + "\n"
+            
+        st.download_button(
+            label="📝 Tải Báo cáo Lâm sàng (Text)", 
+            data=clinical_text.encode('utf-8-sig'), 
+            file_name="BaoCao_LamSang.txt",
+            mime="text/plain"
+        )
