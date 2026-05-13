@@ -92,8 +92,17 @@ with col2:
                 # --- DỰ ĐOÁN VỚI TFLITE ---
                 prediction = predict_tflite(interpreter, img_array)
                 
-                score_normal = prediction[0][0] * 100
-                score_pneumonia = prediction[0][1] * 100
+                # --- XỬ LÝ KẾT QUẢ ĐẦU RA (TỰ ĐỘNG THÍCH ỨNG SIGMOID / SOFTMAX) ---
+                if prediction.shape[1] == 1:
+                    # Trường hợp model dùng hàm kích hoạt Sigmoid (chỉ có 1 output)
+                    # Giả định thông thường lúc train: 0 là Bình thường (Normal), 1 là Viêm phổi (Pneumonia)
+                    prob_pneumonia = prediction[0][0]
+                    score_pneumonia = prob_pneumonia * 100
+                    score_normal = (1.0 - prob_pneumonia) * 100
+                else:
+                    # Trường hợp model dùng hàm kích hoạt Softmax (có 2 output)
+                    score_normal = prediction[0][0] * 100
+                    score_pneumonia = prediction[0][1] * 100
                 
                 # --- HIỂN THỊ KẾT QUẢ THEO CHUẨN Y TẾ ---
                 st.write("### Gợi ý từ AI:")
