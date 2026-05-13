@@ -63,12 +63,31 @@ with col2:
         if st.button('🔍 Yêu cầu AI quét ảnh', type="primary", use_container_width=True):
             with st.spinner('Hệ thống đang trích xuất đặc trưng hình ảnh...'):
                 
-                # --- TIỀN XỬ LÝ ẢNH ---
-                image_gray = image.convert('L')
-                image_resized = image_gray.resize((224, 224))
-                img_array = np.array(image_resized)
+                # --- TIỀN XỬ LÝ ẢNH (CẬP NHẬT TỰ ĐỘNG THEO MODEL) ---
+                
+                # 1. Resize ảnh về kích thước chuẩn (224x224)
+                image_resized = image.resize((224, 224))
+                
+                # 2. Đọc thông tin cấu trúc đầu vào mà model TFLite yêu cầu
+                input_details = interpreter.get_input_details()
+                expected_shape = input_details[0]['shape'] # Ví dụ: [1, 224, 224, 3]
+                expected_channels = expected_shape[-1]     # Lấy số ở vị trí cuối cùng (số kênh màu)
+                
+                # 3. Chuyển đổi hệ màu cho khớp với yêu cầu của model
+                if expected_channels == 3:
+                    # Model yêu cầu 3 kênh màu (RGB - thường gặp ở Transfer Learning)
+                    image_processed = image_resized.convert('RGB')
+                else:
+                    # Model yêu cầu 1 kênh màu (Grayscale)
+                    image_processed = image_resized.convert('L')
+                
+                # 4. Chuyển thành ma trận số (Numpy array) và chuẩn hóa (Normalize)
+                img_array = np.array(image_processed)
                 img_array = img_array / 255.0
-                img_array = img_array.reshape(1, 224, 224, 1)
+                
+                # 5. Đóng gói lại đúng y hệt shape mà model cần
+                # Ví dụ: img_array.reshape(1, 224, 224, 3)
+                img_array = img_array.reshape(expected_shape)
                 
                 # --- DỰ ĐOÁN VỚI TFLITE ---
                 prediction = predict_tflite(interpreter, img_array)
