@@ -37,17 +37,27 @@ def predict_tflite(interpreter, img_array):
     return interpreter.get_tensor(output_details[0]['index'])
 
 def get_last_conv_layer_name(model):
-    """Hàm tự động tìm layer Convolutional cuối cùng trong model"""
+    """
+    Hàm tự động tìm layer trích xuất đặc trưng cuối cùng dựa trên Output Shape.
+    Hỗ trợ hoàn hảo cho các model Transfer Learning (MobileNet, ResNet, VGG...)
+    """
     for layer in reversed(model.layers):
-        # Trường hợp dùng Transfer Learning (Model bọc trong Model)
-        if isinstance(layer, tf.keras.Model):
-            for inner_layer in reversed(layer.layers):
-                if isinstance(inner_layer, tf.keras.layers.Conv2D):
-                    return inner_layer.name
-        # Trường hợp model Sequential bình thường
-        if isinstance(layer, tf.keras.layers.Conv2D):
-            return layer.name
-    raise ValueError("Không tìm thấy layer Conv2D nào trong model!")
+        try:
+            # Lấy shape đầu ra của layer
+            out_shape = layer.output_shape
+            
+            # Xử lý trường hợp layer trả về nhiều output (List)
+            if isinstance(out_shape, list):
+                out_shape = out_shape[0]
+                
+            # Kiểm tra xem có phải là mảng 4 chiều (Batch, Height, Width, Channels) không
+            # Và đảm bảo Height/Width lớn hơn 1 (Không phải là layer đã Flatten)
+            if len(out_shape) == 4 and out_shape[1] is not None and out_shape[1] > 1:
+                return layer.name
+        except Exception:
+            continue
+            
+    raise ValueError("Lỗi: Không tìm thấy layer nào xuất ra mảng 4D (Feature Map) trong model của bạn!")
 
 def make_gradcam_heatmap(img_array, model, last_conv_layer_name, pred_index=None):
     grad_model = tf.keras.models.Model(
