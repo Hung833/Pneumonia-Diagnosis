@@ -68,15 +68,20 @@ def make_gradcam_heatmap(img_array, model, last_conv_layer_name, pred_index=None
         last_conv_layer_output, preds = grad_model(img_array)
         
         # --- BẢN VÁ LỖI TUPLE/LIST ---
-        # Nếu model trả về list, lấy phần tử đầu tiên (Tensor)
         if isinstance(preds, list):
             preds = preds[0]
         if isinstance(last_conv_layer_output, list):
             last_conv_layer_output = last_conv_layer_output[0]
         # -----------------------------
-            
-        if pred_index is None:
+        
+        # --- BẢN VÁ LỖI INDEX OUT OF BOUNDS (SIGMOID VS SOFTMAX) ---
+        # Nếu model dùng hàm Sigmoid (chỉ có 1 output), index bắt buộc phải là 0
+        if preds.shape[1] == 1:
+            pred_index = 0
+        elif pred_index is None:
             pred_index = tf.argmax(preds[0])
+        # ---------------------------------------------------------
+            
         class_channel = preds[:, pred_index]
 
     grads = tape.gradient(class_channel, last_conv_layer_output)
