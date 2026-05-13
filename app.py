@@ -214,12 +214,12 @@ if st.session_state.analysis_results:
                                 keras_model = load_keras_model()
                                 
                                 try:
-                                    # GỌI HÀM TỰ ĐỘNG TÌM LAYER (Không cần hardcode nữa)
-                                    auto_layer_name = get_last_conv_layer_name(keras_model)
+                                    # CHỐT ĐÍCH DANH TÊN LAYER CỦA DENSENET
+                                    LAST_CONV_LAYER_NAME = 'relu'
                                     
-                                    heatmap = make_gradcam_heatmap(row['img_array_for_keras'], keras_model, auto_layer_name, pred_index=row['class_idx'])
+                                    heatmap = make_gradcam_heatmap(row['img_array_for_keras'], keras_model, LAST_CONV_LAYER_NAME, pred_index=row['class_idx'])
                                     overlay_img = overlay_heatmap(row['image'], heatmap, alpha=0.5)
-                                    st.image(overlay_img, caption=f"AI quét qua layer: {auto_layer_name}", use_container_width=True)
+                                    st.image(overlay_img, caption="Vùng màu Đỏ/Vàng là nơi AI tập trung chẩn đoán", use_container_width=True)
                                 except Exception as e:
                                     st.error(f"Lỗi tạo Grad-CAM: {e}")
 
