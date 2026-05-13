@@ -1,0 +1,5 @@
+streamlit==1.31.0
+Pillow==10.2.0
+numpy==1.26.3
+tensorflow-cpu==2.15.0 
+# Dùng tensorflow-cpu trên server streamlit để tối ưu dung lượng và bộ nhớ
