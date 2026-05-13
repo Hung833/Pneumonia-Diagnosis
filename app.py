@@ -106,17 +106,7 @@ def overlay_heatmap(img_pil, heatmap, alpha=0.4):
 # ==========================================
 # 4. GIAO DIỆN & QUẢN LÝ STATE
 # ==========================================
-st.title("🩻 Hệ Thống Phân Loại & Giải Thích X-Quang Phổi")
-
-# --- CODE DEBUG (CHÈN TẠM THỜI ĐỂ TÌM TÊN LAYER) ---
-with st.expander("🛠️ Xem cấu trúc Keras Model (Chỉ dành cho Kỹ sư)"):
-    debug_model = load_keras_model()
-    for layer in debug_model.layers:
-        try:
-            st.code(f"Tên: {layer.name}  |  Shape: {layer.output_shape}")
-        except Exception:
-            st.code(f"Tên: {layer.name}  |  Shape: Không xác định")
-# ---------------------------------------------------
+st.title("🫁 Hệ Thống Phân Loại & Giải Thích X-Quang Phổi")
 
 # KHỞI TẠO SESSION STATE ĐỂ GIỮ DỮ LIỆU KHÔNG BỊ MẤT KHI BẤM NÚT
 if 'analysis_results' not in st.session_state:
