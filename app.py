@@ -56,11 +56,25 @@ def make_gradcam_heatmap(img_array, model, last_conv_layer_name, pred_index=None
     )
     with tf.GradientTape() as tape:
         last_conv_layer_output, preds = grad_model(img_array)
+        
+        # --- BẢN VÁ LỖI TUPLE/LIST ---
+        # Nếu model trả về list, lấy phần tử đầu tiên (Tensor)
+        if isinstance(preds, list):
+            preds = preds[0]
+        if isinstance(last_conv_layer_output, list):
+            last_conv_layer_output = last_conv_layer_output[0]
+        # -----------------------------
+            
         if pred_index is None:
             pred_index = tf.argmax(preds[0])
         class_channel = preds[:, pred_index]
 
     grads = tape.gradient(class_channel, last_conv_layer_output)
+    
+    # Bắt lỗi nếu layer không có đạo hàm kết nối tới output
+    if grads is None:
+        raise ValueError(f"Không thể tính đạo hàm. Layer '{last_conv_layer_name}' có thể không hợp lệ.")
+        
     pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
     last_conv_layer_output = last_conv_layer_output[0]
     heatmap = last_conv_layer_output @ pooled_grads[..., tf.newaxis]
